@@ -1,16 +1,21 @@
-# mobile_store
+# Mobile Onlin Store Internship App
 
-A new Flutter project.
+Mobile app for an online store.
 
-## Getting Started
+How to run?
 
-This project is a starting point for a Flutter application.
+1. First, install dependencies
+```bash
+flutter pub get
+```
+2. Open an Android Emulator or your desired platform
+   
+4. Run the MockAPI https://github.com/turcanud/mobilestore_mockapi for the data
+```bash
+node api.js
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+6. Run the project and enjoy
+```bash
+flutter run
+```
