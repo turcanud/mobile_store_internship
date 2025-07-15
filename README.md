@@ -1,4 +1,4 @@
-# Mobile Onlin Store Internship App
+# Online Store Internship App
 
 Mobile app for an online store.
 
