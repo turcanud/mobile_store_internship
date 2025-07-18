@@ -21,8 +21,9 @@ class SearchBarAndCamera extends StatelessWidget {
               builder: (context, state) {
                 return SearchAnchor.bar(
                   barSide: const WidgetStatePropertyAll(BorderSide.none),
-                  barBackgroundColor:
-                      const WidgetStatePropertyAll(Color(0xFFF7F7F7)),
+                  barBackgroundColor: const WidgetStatePropertyAll(
+                    Color(0xFFF7F7F7),
+                  ),
                   barElevation: const WidgetStatePropertyAll(0),
                   barShape: const WidgetStatePropertyAll(
                     RoundedRectangleBorder(
@@ -32,27 +33,33 @@ class SearchBarAndCamera extends StatelessWidget {
                   viewBackgroundColor: Colors.white,
                   suggestionsBuilder:
                       (BuildContext context, SearchController controller) {
-                    final String input = controller.value.text;
-                    final products = [
-                      ...state.moreToExplore,
-                      ...state.bestSelling
-                    ];
-                    return products
-                        .where((item) => item.name
-                            .toLowerCase()
-                            .contains(input.toLowerCase()))
-                        .map((filteredProduct) => ItemTile(
-                            product: filteredProduct,
-                            onTap: () {
-                              controller.closeView(filteredProduct.name);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductPage(product: filteredProduct)),
-                              );
-                            }));
-                  },
+                        final String input = controller.value.text;
+                        final products = [
+                          ...state.moreToExplore,
+                          ...state.bestSelling,
+                        ];
+                        return products
+                            .where(
+                              (item) => item.name.toLowerCase().contains(
+                                input.toLowerCase(),
+                              ),
+                            )
+                            .map(
+                              (filteredProduct) => ItemTile(
+                                product: filteredProduct,
+                                onTap: () {
+                                  controller.closeView(filteredProduct.name);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductPage(product: filteredProduct),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                      },
                 );
               },
             ),
@@ -92,12 +99,16 @@ class ItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: TitleCustom(
-          title: product.name, fontSize: 16.0, fontWeight: FontWeight.w600),
+        title: product.name,
+        fontSize: 16.0,
+        fontWeight: FontWeight.w600,
+      ),
       subtitle: TitleCustom(
-          title: '\$${product.price.toStringAsFixed(0)}',
-          fontSize: 14.0,
-          fontWeight: FontWeight.w600,
-          color: const Color(0xFF00C569)),
+        title: '\$${product.price.toStringAsFixed(0)}',
+        fontSize: 14.0,
+        fontWeight: FontWeight.w600,
+        color: const Color(0xFF00C569),
+      ),
       onTap: onTap,
     );
   }

@@ -12,9 +12,11 @@ class CategoryItemFeature extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CategoryPage(category: category)));
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryPage(category: category),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 9.0),

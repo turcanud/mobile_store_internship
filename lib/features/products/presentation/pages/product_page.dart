@@ -61,9 +61,9 @@ class ProductPage extends StatelessWidget {
             actions: [
               BlocBuilder<FavoritesBloc, FavoritesState>(
                 builder: (context, state) {
-                  bool isFavorite =
-                      state.products.any((fav) => fav.id == product.id);
-
+                  bool isFavorite = state.products.any(
+                    (fav) => fav.id == product.id,
+                  );
                   return Container(
                     margin: const EdgeInsets.only(right: 16.0, top: 8.0),
                     decoration: BoxDecoration(
@@ -134,7 +134,9 @@ class ProductPage extends StatelessWidget {
                             const SizedBox(height: 8),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
                                 border: Border.all(
@@ -150,7 +152,8 @@ class ProductPage extends StatelessWidget {
                                 underline: const SizedBox(),
                                 hint: const Text('Select size'),
                                 dropdownColor: Colors.white,
-                                items: product.sizes?.map((String size) {
+                                items:
+                                    product.sizes?.map((String size) {
                                       return DropdownMenuItem<String>(
                                         value: size,
                                         child: Text(size),
@@ -181,7 +184,9 @@ class ProductPage extends StatelessWidget {
                             const SizedBox(height: 8),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
                                 border: Border.all(
@@ -197,7 +202,8 @@ class ProductPage extends StatelessWidget {
                                 underline: const SizedBox(),
                                 hint: const Text('Select colour'),
                                 dropdownColor: Colors.white,
-                                items: product.colours?.map((String colour) {
+                                items:
+                                    product.colours?.map((String colour) {
                                       return DropdownMenuItem<String>(
                                         value: colour,
                                         //background color
@@ -207,11 +213,13 @@ class ProductPage extends StatelessWidget {
                                               width: 16,
                                               height: 16,
                                               decoration: BoxDecoration(
-                                                color:
-                                                    _getColorFromName(colour),
+                                                color: _getColorFromName(
+                                                  colour,
+                                                ),
                                                 shape: BoxShape.circle,
                                                 border: Border.all(
-                                                    color: Colors.grey[300]!),
+                                                  color: Colors.grey[300]!,
+                                                ),
                                               ),
                                             ),
                                             const SizedBox(width: 8),
@@ -240,10 +248,7 @@ class ProductPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     product.description,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      height: 1.5,
-                    ),
+                    style: const TextStyle(fontSize: 16, height: 1.5),
                   ),
                   const SizedBox(height: 6.0),
                   // Read More Section
@@ -281,76 +286,78 @@ class ProductPage extends StatelessWidget {
 
                   // Reviews List
                   if (product.reviews != null && product.reviews!.isNotEmpty)
-                    ...product.reviews!.map((review) => Container(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 5,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.grey[300],
-                                    child: Icon(
-                                      Icons.person,
-                                      color: Colors.grey[600],
-                                      size: 20,
-                                    ),
+                    ...product.reviews!.map(
+                      (review) => Container(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 5,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.grey[300],
+                                  child: Icon(
+                                    Icons.person,
+                                    color: Colors.grey[600],
+                                    size: 20,
                                   ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          review.author,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Row(
-                                          children: List.generate(5, (index) {
-                                            return Icon(
-                                              index < review.rating
-                                                  ? Icons.star
-                                                  : Icons.star_border,
-                                              color: Colors.amber,
-                                              size: 16,
-                                            );
-                                          }),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                review.content,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  height: 1.4,
-                                  color: Colors.black87,
                                 ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        review.author,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: List.generate(5, (index) {
+                                          return Icon(
+                                            index < review.rating
+                                                ? Icons.star
+                                                : Icons.star_border,
+                                            color: Colors.amber,
+                                            size: 16,
+                                          );
+                                        }),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              review.content,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                height: 1.4,
+                                color: Colors.black87,
                               ),
-                            ],
-                          ),
-                        ))
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   else
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -360,10 +367,7 @@ class ProductPage extends StatelessWidget {
                       ),
                       child: const Text(
                         'No reviews yet. Be the first to review this product!',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ),
                 ],
@@ -422,9 +426,7 @@ class ProductPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00C569),
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16,
-                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
                     ),
