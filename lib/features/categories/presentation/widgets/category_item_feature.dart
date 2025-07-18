@@ -31,7 +31,7 @@ class CategoryItemFeature extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withValues(
-                      alpha: 50,
+                      alpha: .1,
                       red: 0,
                       green: 0,
                       blue: 0,
