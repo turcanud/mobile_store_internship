@@ -4,6 +4,7 @@ import 'package:mobile_store/core/components/product_grid.dart';
 import 'package:mobile_store/core/components/section_title.dart';
 import 'package:mobile_store/core/constants/app_constants.dart';
 import 'package:mobile_store/core/widgets/search_bar_and_camera.dart';
+import 'package:mobile_store/core/widgets/section_top_line.dart';
 import 'package:mobile_store/features/categories/presentation/widgets/categories_carousel.dart';
 import 'package:mobile_store/features/products/presentation/bloc/products_bloc.dart';
 import 'package:mobile_store/features/products/presentation/bloc/products_event.dart';
@@ -18,112 +19,85 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late final ScrollController scrollController;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
-    scrollController.addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final productsBloc = context.read<ProductsBloc>();
-    if (scrollController.position.pixels ==
-            scrollController.position.maxScrollExtent &&
-        !productsBloc.state.allLoaded) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()),
-      );
-      productsBloc.add(ProductsLoadMore());
-      Future.delayed(const Duration(seconds: 1), () {
-        if (mounted) Navigator.of(context, rootNavigator: true).pop();
-      });
-    }
+    _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
-    scrollController.removeListener(_onScroll);
-    scrollController.dispose();
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    final productsBloc = context.read<ProductsBloc>();
+    if (_scrollController.position.atEdge &&
+        _scrollController.position.pixels != 0 &&
+        !productsBloc.state.allLoaded) {
+      _onEndReached(productsBloc);
+    }
+  }
+
+  void _onEndReached(ProductsBloc productsBloc) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+    productsBloc.add(ProductsLoadMore());
+    Future.delayed(const Duration(seconds: 1), () {
+      if (mounted) Navigator.of(context, rootNavigator: true).pop();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsBloc, ProductsState>(
       builder: (context, state) {
-        if (state.bestSelling.isEmpty && state.moreToExplore.isEmpty) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return SingleChildScrollView(
-          controller: scrollController,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppConstants.layoutDefaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SearchBarAndCamera(),
-
-                  //Categories section
-                  const SectionTitle(title: 'Categories'),
-
-                  const SizedBox(height: 18.0),
-
-                  //A carousel slider for categories
-                  const CategoriesCarousel(),
-
-                  //Best Selling Products section
-                  Container(
-                    margin: const EdgeInsets.only(top: 30.0, bottom: 20.0),
-                    child: Row(
-                      children: [
-                        const SectionTitle(title: 'Best Selling'),
-                        const Spacer(),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/sectionView');
-                          },
-                          child: const TitleCustom(
-                              title: 'See All',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //A carousel slider best selling products
-                  const ProductsCarousel(),
-
-                  // More Products Section Title
-                  Container(
-                    margin: const EdgeInsets.only(top: 44.0, bottom: 28.0),
-                    child: const SectionTitle(title: 'More to Explore'),
-                  ),
-
-                  //A grid view for more products
-                  ProductGrid(products: state.moreToExplore),
-                  //If all products are loaded, show a message
-                  if (state.allLoaded)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
-                      child: Center(
-                        child: TitleCustom(
-                          title: 'All products loaded',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                ],
+        List<Widget> buildCategories = [
+          const SearchBarAndCamera(),
+          const SectionTitle(title: 'Categories'),
+          const SizedBox(height: 18.0),
+          const CategoriesCarousel(),
+          const SectionTopLine(),
+          const ProductsCarousel(),
+          Container(
+            margin: const EdgeInsets.only(top: 44.0, bottom: 28.0),
+            child: const SectionTitle(title: 'More to Explore'),
+          ),
+          ProductGrid(products: state.moreToExplore),
+          if (state.allLoaded)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Center(
+                child: TitleCustom(
+                  title: 'All products loaded',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
+            ),
+        ];
+
+        if (state.bestSelling.isEmpty && state.moreToExplore.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.layoutDefaultPadding,
+            ),
+            child: ListView.builder(
+              controller: _scrollController,
+              itemCount: buildCategories.length,
+              itemBuilder: (context, index) {
+                return buildCategories[index];
+              },
             ),
           ),
         );
