@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_store/core/components/product_grid.dart';
 import 'package:mobile_store/core/constants/design_constants.dart';
 import 'package:mobile_store/features/products/presentation/bloc/products_bloc.dart';
-import 'package:mobile_store/features/products/presentation/bloc/products_state.dart';
 
 class SectionViewPage extends StatelessWidget {
   const SectionViewPage({super.key});
@@ -16,10 +15,9 @@ class SectionViewPage extends StatelessWidget {
         title: const Text('Best Selling'),
         backgroundColor: kBackgroundColor,
       ),
-      body: BlocBuilder<ProductsBloc, ProductsState>(
-        builder: (context, state) {
-          return ProductGrid(products: state.bestSelling, isScrollable: true);
-        },
+      body: ProductGrid(
+        products: context.read<ProductsBloc>().state.bestSelling,
+        isScrollable: true,
       ),
     );
   }

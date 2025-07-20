@@ -57,51 +57,39 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductsBloc, ProductsState>(
-      builder: (context, state) {
-        List<Widget> buildCategories = [
-          const SearchBarAndCamera(),
-          const SectionTitle(title: 'Categories'),
-          const SizedBox(height: 18.0),
-          const CategoriesCarousel(),
-          const SectionTopLine(),
-          const ProductsCarousel(),
-          Container(
-            margin: const EdgeInsets.only(top: 44.0, bottom: 28.0),
-            child: const SectionTitle(title: 'More to Explore'),
-          ),
-          ProductGrid(products: state.moreToExplore),
-          if (state.allLoaded)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Center(
-                child: TitleCustom(
-                  title: 'All products loaded',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-        ];
-
-        if (state.bestSelling.isEmpty && state.moreToExplore.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.layoutDefaultPadding,
-            ),
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: buildCategories.length,
-              itemBuilder: (context, index) {
-                return buildCategories[index];
-              },
-            ),
-          ),
-        );
-      },
+    List<Widget> buildCategories = [
+      const SearchBarAndCamera(),
+      const SectionTitle(title: 'Categories'),
+      const SizedBox(height: 18.0),
+      const CategoriesCarousel(),
+      const SectionTopLine(),
+      const ProductsCarousel(),
+      Container(
+        margin: const EdgeInsets.only(top: 44.0, bottom: 28.0),
+        child: const SectionTitle(title: 'More to Explore'),
+      ),
+      BlocBuilder<ProductsBloc, ProductsState>(
+        builder: (context, state) {
+          if (state.bestSelling.isEmpty && state.moreToExplore.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return ProductGrid(products: state.moreToExplore);
+        },
+      ),
+    ];
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppConstants.layoutDefaultPadding,
+        ),
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: buildCategories.length,
+          itemBuilder: (context, index) {
+            return buildCategories[index];
+          },
+        ),
+      ),
     );
   }
 }

@@ -20,9 +20,11 @@ class FavoritePage extends StatelessWidget {
         builder: (context, state) {
           if (state.products.isEmpty) {
             return const Center(
-                child: Text('Favorites list is empty',
-                    style:
-                        TextStyle(fontSize: 18, fontFamily: 'SF Pro Display')));
+              child: Text(
+                'No favorites yet',
+                style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+            );
           }
           return ProductGrid(products: state.products, isScrollable: true);
         },

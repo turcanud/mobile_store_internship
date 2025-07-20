@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile_store/core/components/section_title.dart';
 import 'package:mobile_store/features/products/domain/product.dart';
 import 'package:mobile_store/features/products/presentation/bloc/products_bloc.dart';
-import 'package:mobile_store/features/products/presentation/bloc/products_state.dart';
 import 'package:mobile_store/features/products/presentation/pages/product_page.dart';
 
 class SearchBarAndCamera extends StatelessWidget {
@@ -17,51 +16,47 @@ class SearchBarAndCamera extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: BlocBuilder<ProductsBloc, ProductsState>(
-              builder: (context, state) {
-                return SearchAnchor.bar(
-                  barSide: const WidgetStatePropertyAll(BorderSide.none),
-                  barBackgroundColor: const WidgetStatePropertyAll(
-                    Color(0xFFF7F7F7),
-                  ),
-                  barElevation: const WidgetStatePropertyAll(0),
-                  barShape: const WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(45.0)),
-                    ),
-                  ),
-                  viewBackgroundColor: Colors.white,
-                  suggestionsBuilder:
-                      (BuildContext context, SearchController controller) {
-                        final String input = controller.value.text;
-                        final products = [
-                          ...state.moreToExplore,
-                          ...state.bestSelling,
-                        ];
-                        return products
-                            .where(
-                              (item) => item.name.toLowerCase().contains(
-                                input.toLowerCase(),
-                              ),
-                            )
-                            .map(
-                              (filteredProduct) => ItemTile(
-                                product: filteredProduct,
-                                onTap: () {
-                                  controller.closeView(filteredProduct.name);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProductPage(product: filteredProduct),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                      },
-                );
-              },
+            child: SearchAnchor.bar(
+              barSide: const WidgetStatePropertyAll(BorderSide.none),
+              barBackgroundColor: const WidgetStatePropertyAll(
+                Color(0xFFF7F7F7),
+              ),
+              barElevation: const WidgetStatePropertyAll(0),
+              barShape: const WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(45.0)),
+                ),
+              ),
+              viewBackgroundColor: Colors.white,
+              suggestionsBuilder:
+                  (BuildContext context, SearchController controller) {
+                    final String input = controller.value.text;
+                    final products = [
+                      ...context.read<ProductsBloc>().state.moreToExplore,
+                      ...context.read<ProductsBloc>().state.bestSelling,
+                    ];
+                    return products
+                        .where(
+                          (item) => item.name.toLowerCase().contains(
+                            input.toLowerCase(),
+                          ),
+                        )
+                        .map(
+                          (filteredProduct) => ItemTile(
+                            product: filteredProduct,
+                            onTap: () {
+                              controller.closeView(filteredProduct.name);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProductPage(product: filteredProduct),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                  },
             ),
           ),
           Container(

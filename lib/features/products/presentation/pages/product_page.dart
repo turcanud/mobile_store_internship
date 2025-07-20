@@ -59,18 +59,16 @@ class ProductPage extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
             ),
             actions: [
-              BlocBuilder<FavoritesBloc, FavoritesState>(
-                builder: (context, state) {
-                  bool isFavorite = state.products.any(
-                    (fav) => fav.id == product.id,
-                  );
-                  return Container(
-                    margin: const EdgeInsets.only(right: 16.0, top: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: IconButton(
+              Container(
+                margin: const EdgeInsets.only(right: 16.0, top: 8.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: BlocBuilder<FavoritesBloc, FavoritesState>(
+                  builder: (context, state) {
+                    final isFavorite = state.products.contains(product);
+                    return IconButton(
                       icon: Icon(
                         isFavorite ? Icons.star : Icons.star_border,
                         color: isFavorite ? Colors.amber : Colors.black,
@@ -83,9 +81,9 @@ class ProductPage extends StatelessWidget {
                           favoriteBloc.add(FavoritesAdded(product: product));
                         }
                       },
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(

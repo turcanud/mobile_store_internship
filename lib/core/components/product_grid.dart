@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_store/features/products/presentation/widgets/product_item_feature.dart';
+import 'package:mobile_store/features/products/presentation/widgets/product_item.dart';
 import 'package:mobile_store/features/products/domain/product.dart';
 
 class ProductGrid extends StatelessWidget {
@@ -26,7 +26,7 @@ class ProductGrid extends StatelessWidget {
           ? const AlwaysScrollableScrollPhysics()
           : const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return ProductItemFeature(product: products[index]);
+        return ProductItem(product: products[index]);
       },
     );
   }

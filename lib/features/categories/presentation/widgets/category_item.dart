@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile_store/features/categories/domain/category.dart';
 import 'package:mobile_store/features/categories/presentation/pages/category_page.dart';
 
-class CategoryItemFeature extends StatelessWidget {
+class CategoryItem extends StatelessWidget {
   final Category category;
-  const CategoryItemFeature({super.key, required this.category});
+  const CategoryItem({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
